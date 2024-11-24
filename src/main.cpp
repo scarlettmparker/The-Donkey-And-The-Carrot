@@ -99,7 +99,7 @@ void print_bitsets() {
  */
 int get_bitset_index(int square) {
     if (square < 0 || square >= 81) {
-        return 1;
+        return -2;
     }
 
     for (int i = 0; i < 7; ++i) {
@@ -188,15 +188,13 @@ static inline void generate_valid_squares(int source, int piece, moves *move_lis
 
     // up right curve
     if (piece == curve_0) {
-        if ((get_bitset_index(square_up + 1) == -1) && (prev_move == curve_2 || prev_move == curve_3 || prev_move == straight_1)) {
-            int new_rank = get_rank(square_up);
-            if (abs(new_rank - rank) == 1 && abs(get_file(square_up + 1) - file) == 1) {
+        if ((get_bitset_index(square_up + 1) == -1) && (prev_move == curve_2 || prev_move == curve_3 || prev_move == straight_1)) {;
+            if (abs(get_rank(square_up + 1) - rank) == 1) {
                 add_move(move_list, square_up);
             }
         }
         if ((get_bitset_index(square_left + 9) == -1) && (prev_move == curve_1 || prev_move == curve_2 || prev_move == straight_0)) {
-            int new_file = get_file(square_left);
-            if (abs(new_file - file) == 1 && abs(get_rank(square_left + 9) - rank) == 1) {
+            if (abs(get_file(square_left + 9) - file) == 1) {
                 add_move(move_list, square_left);
             }
         }
@@ -205,12 +203,12 @@ static inline void generate_valid_squares(int source, int piece, moves *move_lis
     // right down curve
     if (piece == curve_1) {
         if ((get_bitset_index(square_right + 9) == -1) && (prev_move == curve_0 || prev_move == curve_3 || prev_move == straight_0)) {
-            if (abs(get_rank(square_right + 9) - rank) == 1 && abs(get_file(square_right) - file) == 1) {
+            if (abs(get_rank(square_right + 9) - rank) == 1) {
                 add_move(move_list, square_right);
             }
         }
         if ((get_bitset_index(square_up - 1) == -1) && (prev_move == curve_2 || prev_move == curve_3 || prev_move == straight_1)) {
-            if (abs(get_rank(square_up) - rank) == 1 && abs(get_file(square_up - 1) - file) == 1) {
+            if (abs(get_rank(square_up - 1) - rank) == 1) {
                 add_move(move_list, square_up);
             }
         }
@@ -219,12 +217,12 @@ static inline void generate_valid_squares(int source, int piece, moves *move_lis
     // right up curve
     if (piece == curve_2) {
         if ((get_bitset_index(square_right - 9) == -1) && (prev_move == curve_0 || prev_move == curve_3 || prev_move == straight_0)) {
-            if (abs(get_rank(square_right - 9) - rank) == 1 && abs(get_file(square_right) - file) == 1) {
+            if (abs(get_rank(square_right - 9) - rank)) {
                 add_move(move_list, square_right);
             }
         }
         if ((get_bitset_index(square_down - 1) == -1) && (prev_move == curve_0 || prev_move == curve_1 || prev_move == straight_1)) {
-            if (abs(get_rank(square_down) - rank) == 1 && abs(get_file(square_down - 1) - file) == 1) {
+            if (abs(get_rank(square_down - 1) - rank) == 1) {
                 add_move(move_list, square_down);
             }
         }
@@ -233,12 +231,12 @@ static inline void generate_valid_squares(int source, int piece, moves *move_lis
     // down right curve
     if (piece == curve_3) {
         if ((get_bitset_index(square_left - 9) == -1) && (prev_move == curve_1 || prev_move == curve_2 || prev_move == straight_0)) {
-            if (abs(get_rank(square_left) - rank) == 1 && abs(get_file(square_left - 9) - file) == 1) {
+            if (abs(get_file(square_left - 9) - file) == 1) {
                 add_move(move_list, square_left);
             }
         }
         if ((get_bitset_index(square_down + 1) == -1) && (prev_move == curve_0 || prev_move == curve_1 || prev_move == straight_1)) {
-            if (abs(get_rank(square_down) - rank) == 1 && abs(get_file(square_down + 1) - file) == 1) {
+            if (abs(get_file(square_down + 1) - file) == 1) {
                 add_move(move_list, square_down);
             }
         }
@@ -247,12 +245,12 @@ static inline void generate_valid_squares(int source, int piece, moves *move_lis
     // horizontal line
     if (piece == straight_0) {
         if ((get_bitset_index(square_right + 1) == -1) && (prev_move == curve_0 || prev_move == curve_3 || prev_move == straight_0)) {
-            if (abs(get_file(square_right) - file) == 1) {
+            if (abs(get_file(square_right) - file) == 1 && get_file(square_right) != 8) {
                 add_move(move_list, square_right);
             }
         }
         if ((get_bitset_index(square_left - 1) == -1) && (prev_move == curve_1 || prev_move == curve_2 || prev_move == straight_0)) {
-            if (abs(get_file(square_left) - file) == 1) {
+            if (abs(get_file(square_left) - file) == 1 && get_file(square_left) != 0) {
                 add_move(move_list, square_left);
             }
         }
@@ -261,12 +259,12 @@ static inline void generate_valid_squares(int source, int piece, moves *move_lis
     // vertical line
     if (piece == straight_1) {
         if ((get_bitset_index(square_up - 9) == -1) && (prev_move == curve_2 || prev_move == curve_3 || prev_move == straight_1)) {
-            if (abs(get_rank(square_up) - rank) == 1) {
+            if (abs(get_rank(square_up) - rank) == 1 && get_rank(square_up) != 8) {
                 add_move(move_list, square_up);
             }
         }
         if ((get_bitset_index(square_down + 9) == -1) && (prev_move == curve_0 || prev_move == curve_1 || prev_move == straight_1)) {
-            if (abs(get_rank(square_down) - rank) == 1) {
+            if (abs(get_rank(square_down) - rank) == 1 && get_rank(square_down) != 0) {
                 add_move(move_list, square_down);
             }
         }
@@ -300,18 +298,19 @@ int make_move(int prev_move, int num) {
     generate_valid_squares(prev_move, piece, move_list);
 
     if (move_list->count == 0) {
-        // printf("no valid moves, rolling again.\n");
         return prev_move;
     }
 
-    int move = move_list->moves[0];
+    for (int move_count = 0; move_count < move_list->count; move_count++) {
+        int move = move_list->moves[move_count];
 
-    // ensure pieces don't overwrite themselves.
-    if (!(occupancies[move])) {
-        board[piece].set(move, true);
-        occupancies.set(move, true);
-
-        prev_move = move;
+        // ensure pieces don't overwrite themselves.
+        if (!(occupancies[move])) {
+            board[piece].set(move, true);
+            occupancies.set(move, true);
+            prev_move = move;
+            break;
+        }
     }
 
     return prev_move;
